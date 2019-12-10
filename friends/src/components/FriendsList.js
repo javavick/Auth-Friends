@@ -1,9 +1,16 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import Friend from "./Friend.js";
 
 const FriendsList = (props) => {
-  return (
+  const [wasDataFetched, setWasDataFetched] = useState(false);
+
+  useEffect(() => {
+    if (props.data.length !== 0) {
+      setWasDataFetched(true);
+    }
+  }, [props.data]);
+
+  return wasDataFetched ? (
     <div>
       {props.data.map((item) => {
         return (
@@ -16,6 +23,8 @@ const FriendsList = (props) => {
         );
       })}
     </div>
+  ) : (
+    <p>FETCHING DATA</p>
   );
 };
 

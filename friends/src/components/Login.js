@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import useForm from "react-hook-form";
 import axiosWithAuth from "../auth/axiosWithAuth.js";
 
-const Login = () => {
+const Login = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { register, handleSubmit, reset, errors } = useForm();
   const onSubmit = (data) => {
     reset();
+    setIsLoading(true);
     axiosWithAuth()
       .post("/login", data)
-      .then((res) => localStorage.setItem("token", res.data.payload))
+      .then((res) => {
+        localStorage.setItem("token", res.data.payload);
+        setTimeout(() => props.history.push("/dashboard"), 1000);
+      })
       .catch((err) => console.log(err));
   };
 
-  return (
+  return !isLoading ? (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>
         Username: <span></span>
@@ -60,6 +66,8 @@ const Login = () => {
 
       <input type="submit" value="Login" />
     </form>
+  ) : (
+    <h1>LOADING PAGE</h1>
   );
 };
 
