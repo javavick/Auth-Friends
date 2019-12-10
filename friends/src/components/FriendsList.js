@@ -10,6 +10,8 @@ const FriendsList = (props) => {
     }
   }, [props.data]);
 
+  console.log("test");
+
   return wasDataFetched ? (
     <div>
       {props.data.map((item) => {
