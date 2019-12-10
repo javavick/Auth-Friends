@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
 import axiosWithAuth from "./auth/axiosWithAuth.js";
 
+import Home from "./components/Home.js";
 import Login from "./components/Login.js";
 import PrivateRoute from "./components/PrivateRoute.js";
 import FriendsList from "./components/FriendsList.js";
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <div className="App">
+      <Route exact path="/" component={Home} />
       <Route path="/login" component={Login} />
       <PrivateRoute
         path="/dashboard"
