@@ -13,7 +13,14 @@ const Login = (props) => {
       .post("/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data.payload);
-        setTimeout(() => props.history.push("/dashboard"), 1000);
+        axiosWithAuth()
+          .get("/friends")
+          .then((res) => {
+            console.log(res.data);
+            props.setData(res.data);
+          })
+          .catch((err) => console.log(err));
+        props.history.push("/dashboard");
       })
       .catch((err) => console.log(err));
   };

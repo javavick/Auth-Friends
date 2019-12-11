@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
-import axiosWithAuth from "./auth/axiosWithAuth.js";
 
 import Home from "./components/Home.js";
 import Login from "./components/Login.js";
@@ -13,27 +12,20 @@ import "./App.css";
 function App() {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    axiosWithAuth()
-      .get("/friends")
-      .then((res) => {
-        console.log(res.data);
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
     <div className="App">
       <Route exact path="/" component={Home} />
-      <Route path="/login" component={Login} />
+      <Route
+        path="/login"
+        render={(props) => <Login {...props} setData={setData} />}
+      />
       <PrivateRoute
         path="/dashboard"
         render={() => <AddFriend setData={setData} />}
       />
       <PrivateRoute
         path="/dashboard"
-        render={() => <FriendsList data={data} />}
+        render={() => <FriendsList setData={setData} data={data} />}
       />
     </div>
   );

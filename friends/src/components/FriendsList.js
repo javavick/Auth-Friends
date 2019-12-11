@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Friend from "./Friend.js";
+import axiosWithAuth from "../auth/axiosWithAuth.js";
 
 const FriendsList = (props) => {
   const [wasDataFetched, setWasDataFetched] = useState(false);
@@ -10,7 +11,15 @@ const FriendsList = (props) => {
     }
   }, [props.data]);
 
-  console.log("test");
+  if (props.data.length === 0) {
+    axiosWithAuth()
+      .get("/friends")
+      .then((res) => {
+        console.log(res.data);
+        props.setData(res.data);
+      })
+      .catch((err) => console.log(err));
+  }
 
   return wasDataFetched ? (
     <div>
